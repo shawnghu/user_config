@@ -17,6 +17,11 @@ alias au='apt update'
 alias agin='apt-get install '
 alias agrm='apt-get remove '
 
+commit() {
+    local cmd="$*"
+        git commit -a -m "$($cmd | tee /dev/tty)" -m "$cmd" --allow-empty
+    }
+
 histrun() {
     echo "history | grep -vE \"history|histrun\" | grep -oE \"$1.*$\" | tail -n 1"
     history -s "$(history | grep -vE "history|histrun" | grep -oE "$1.*$" | tail -n 1)"
