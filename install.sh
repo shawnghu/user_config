@@ -1,7 +1,7 @@
 #!/bin/bash
 # needs: vim, tmux
 
-command -v vim && echo "vim is installed" || sudo apt install vim || echo "vim is NOT installed"
+sudo apt install vim-gtk3
 command -v tmux && echo "tmux is installed" || sudo apt install tmux || echo "tmux is NOT installed"
 command -v git && echo "git is installed" || sudo apt install git || echo "git is NOT installed"
 
@@ -18,3 +18,5 @@ ln -s `pwd`/.tmux.conf ~
 
 git config --global user.email shawnghu@gmail.com 
 git config --global user.name "Shawn Hu"
+
+
