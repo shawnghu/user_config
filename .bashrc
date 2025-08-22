@@ -8,6 +8,10 @@
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
+alias ttag='f() { docker tag "$1" "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$2"; }; f'
+alias tpush='f() { docker push "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$1"; }; f'
+alias tlist='f() { gcloud artifacts docker images list us-east1-docker.pkg.dev/gcp-taiga/dmodel }; f'
+alias tpull='f() { docker pull "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$1"; }; f'
 alias shit='sudo $(fc -ln -1)' #for when you forget to sudo
 alias ro='$(`fc -e -`)' # execute last output
 alias co='echo `fc -e -` | xclip -in -selection clipboard' # copy last output    
@@ -392,6 +396,8 @@ parse_git_branch() {
 }
 export PS1="${PS1%?}\$(parse_git_branch)\[\033[00m\] "
 
+export PATH="~/.local/bin:$PATH"
+
 # use vim to read man pages
 export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
 
@@ -401,25 +407,6 @@ export HISTTIMEFORMAT="%d/%m/%y %T "
 # prompts to install package when command not found
 export COMMAND_NOT_FOUND_INSTALL_PROMPT=1
 
-
-# deal with dark blue on black color scheme for bash on ubuntu on windows
-#LS_COLORS='rs=0:di=1;35:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:';
-#export LS_COLORS
-
-#cuda commands
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64"
-export CUDA_HOME=/usr/local/cuda
-
-#turn off the annoying error sound for bash on ubuntu on windows
-bind 'set bell-style none'
-
-#howto: change terminal color scheme
-#wget -O gogh https://git.io/vQgMr && chmod +x gogh && ./gogh && rm gogh
-
-###########################################################
-#work, specifically crossover machine
-
-#machine specific
 
 #docker
 if [ -n "$CONTAINER" ]; then
