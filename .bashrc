@@ -8,6 +8,7 @@
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
+alias xclip='xclip -selection clipboard'
 alias ttag='f() { docker tag "$1" "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$2"; }; f'
 alias tpush='f() { docker push "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$1"; }; f'
 alias tlist='f() { gcloud artifacts docker images list us-east1-docker.pkg.dev/gcp-taiga/dmodel }; f'
