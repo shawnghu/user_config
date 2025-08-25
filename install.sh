@@ -25,4 +25,4 @@ ln -s `pwd`/settings.json ~/.claude
 command -v npm && echo "npm is installed" || sudo apt install npm || echo "npm is NOT installed"
 npm install -g @anthropic-ai/claude-code
 
-
+touch ~/.Xauthority
