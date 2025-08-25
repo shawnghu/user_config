@@ -17,6 +17,12 @@ ln -s `pwd`/.vimrc ~
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
 
+ln -s `pwd`/.claude_bash_logger.sh ~
+ln -s `pwd`/.claude_command_parser.py ~
+mkdir -p ~/.claude
+ln -s `pwd`/settings.json ~/.claude
 
+command -v npm && echo "npm is installed" || sudo apt install npm || echo "npm is NOT installed"
+npm install -g @anthropic-ai/claude-code
 
 
