@@ -15,6 +15,9 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
+"
+Plugin 'AndrewRadev/linediff.vim'
+Plugin 'Konfekt/FastFold'
 
 "Python formatting
 Plugin 'psf/black'

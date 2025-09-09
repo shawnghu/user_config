@@ -26,3 +26,9 @@ command -v npm && echo "npm is installed" || sudo apt install npm || echo "npm i
 npm install -g @anthropic-ai/claude-code
 
 touch ~/.Xauthority
+
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+zoxide init --cmd cd bash
+
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install --all # untested; these might conflict
