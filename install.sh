@@ -10,8 +10,8 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s `pwd`/.tmux.conf ~
 ~/.tmux/plugins/tpm/bin/install_plugins
 
-ln -s `pwd`/.bashrc ~
-ln -s `pwd`/.bash_profile ~
+ln -sf `pwd`/.bashrc ~ # overwrite amazon ec2 default
+ln -sf `pwd`/.bash_profile ~
 
 ln -s `pwd`/.vimrc ~
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -22,8 +22,8 @@ ln -s `pwd`/.claude_command_parser.py ~
 mkdir -p ~/.claude
 ln -s `pwd`/settings.json ~/.claude
 
-# sudo apt update
-# sudo apt install -y build-essential
+sudo apt update
+sudo apt install -y build-essential
 
 sudo apt install -y ripgrep
 
@@ -32,6 +32,10 @@ npm config set prefix '~/.npm-global'
 export PATH=~/.npm-global/bin:$PATH
 command -v npm && echo "npm is installed" || sudo apt install -y npm || echo "npm is NOT installed"
 npm install -g @anthropic-ai/claude-code
+
+sudo apt install docker.io 
+sudo apt install docker-buildx
+sudo usermod -a -G docker $USER
 
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
@@ -42,3 +46,5 @@ zoxide init --cmd cd bash
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all # untested; these might conflict
+
+

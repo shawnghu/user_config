@@ -4,3 +4,5 @@ function cl() { builtin cd "$@" && ls; }
 function sl() { ls; }
 
 source ~/.bashrc
+
+. "$HOME/.local/bin/env"

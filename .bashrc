@@ -416,3 +416,5 @@ unset color_prompt force_color_prompt
 PS1="${PS1_PREFIX}${PS1}"
 
 export PATH=~/.npm-global/bin:$PATH
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
