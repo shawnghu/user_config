@@ -1,11 +1,11 @@
 #!/bin/bash
 # needs: vim, tmux
-command -v git && echo "git is installed" || sudo apt install git || echo "git is NOT installed"
+command -v git && echo "git is installed" || sudo apt install -y git || echo "git is NOT installed"
 git config --global user.email shawnghu@gmail.com 
 git config --global user.name "Shawn Hu"
 
 sudo apt install vim-gtk3
-command -v tmux && echo "tmux is installed" || sudo apt install tmux || echo "tmux is NOT installed"
+command -v tmux && echo "tmux is installed" || sudo apt install -y tmux || echo "tmux is NOT installed"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s `pwd`/.tmux.conf ~
 ~/.tmux/plugins/tpm/bin/install_plugins
@@ -22,8 +22,18 @@ ln -s `pwd`/.claude_command_parser.py ~
 mkdir -p ~/.claude
 ln -s `pwd`/settings.json ~/.claude
 
-command -v npm && echo "npm is installed" || sudo apt install npm || echo "npm is NOT installed"
+# sudo apt update
+# sudo apt install -y build-essential
+
+sudo apt install -y ripgrep
+
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'
+export PATH=~/.npm-global/bin:$PATH
+command -v npm && echo "npm is installed" || sudo apt install -y npm || echo "npm is NOT installed"
 npm install -g @anthropic-ai/claude-code
+
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 touch ~/.Xauthority
 

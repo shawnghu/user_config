@@ -399,9 +399,6 @@ export PS1="${PS1%?}\$(parse_git_branch)\[\033[00m\] "
 
 export PATH="~/.local/bin:$PATH"
 
-# use vim to read man pages
-export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
-
 # put timestamps in history file
 export HISTTIMEFORMAT="%d/%m/%y %T "
 
@@ -417,3 +414,5 @@ else
 fi
 unset color_prompt force_color_prompt
 PS1="${PS1_PREFIX}${PS1}"
+
+export PATH=~/.npm-global/bin:$PATH
