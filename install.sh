@@ -3,6 +3,7 @@
 command -v git && echo "git is installed" || sudo apt install -y git || echo "git is NOT installed"
 git config --global user.email shawnghu@gmail.com 
 git config --global user.name "Shawn Hu"
+git config --global alias.rlog "reflog --date=format:'%Y-%m-%d %H:%M'"
 
 sudo apt install vim-gtk3
 command -v tmux && echo "tmux is installed" || sudo apt install -y tmux || echo "tmux is NOT installed"
