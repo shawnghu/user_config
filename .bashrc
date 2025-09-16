@@ -9,6 +9,10 @@
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 alias xclip='xclip -selection clipboard'
+alias dbash='f() { docker exec -it ${1:-$(docker ps | head -n 2 | tail -n 1 | cut -d " " -f 1)} /bin/bash; }; f'
+alias dstart='f() { docker start ${1:-$(docker ps -a | head -n 2 | tail -n 1 | cut -d " " -f 1)}; }; f'
+alias tback='f() { dir=$(basename $(pwd)); docker run --network none -v .:/mcp_server/$dir -i $dir uv --offline --directory /mcp_server run $dir mcp; }; f'
+alias tfront='f() { dir=$(basename $(pwd)); docker_id=$(docker run --network none -d -v .:/mcp_server/$dir -i $dir uv --offline --directory /mcp_server run $dir mcp) && echo "http://localhost:5000/app?container_id=$docker_id&problem_id=${1:-train-sae-basic-strong-hint}&max_tokens=64000"; }; f' 
 alias ttag='f() { docker tag "$1" "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$2"; }; f'
 alias tpush='f() { docker push "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$1"; }; f'
 alias tlist='f() { gcloud artifacts docker images list us-east1-docker.pkg.dev/gcp-taiga/dmodel }; f'
