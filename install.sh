@@ -29,9 +29,9 @@ sudo apt install -y build-essential
 sudo apt install -y ripgrep
 
 mkdir ~/.npm-global
-npm config set prefix '~/.npm-global'
 export PATH=~/.npm-global/bin:$PATH
 command -v npm && echo "npm is installed" || sudo apt install -y npm || echo "npm is NOT installed"
+npm config set prefix '~/.npm-global'
 npm install -g @anthropic-ai/claude-code
 
 sudo apt install docker.io 
