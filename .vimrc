@@ -25,6 +25,7 @@ nnoremap <F9> :Black<CR>
 
 " For parentheses n shit
 Plugin 'tpope/vim-surround'
+Plugin 'tmsvg/pear-tree'
 
 "Display indentation
 Plugin 'Yggdroot/indentLine'
