@@ -49,7 +49,7 @@ histrun() {
     history -s "$(history | grep -vE "history|histrun" | grep -oE "$1.*$" | tail -n 1)"
 }
 
-gitls() {
+gls() {
     FILES="$(git ls-tree --name-only HEAD .)"
     MAXLEN=0
     IFS="$(printf "\n\b")"
