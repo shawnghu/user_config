@@ -26,6 +26,19 @@ alias au='apt update'
 alias agin='apt-get install '
 alias agrm='apt-get remove '
 
+alias grlog="reflog --date=format:\'%Y-%m-%d %H:%M'"
+alias gc="git commit"
+alias gcm="git commit -m"
+alias ga="git add"
+alias gau="git add -u"
+alias gp="git push"
+alias gpf="git push --force-with-lease"
+alias gs="git status"
+alias gsu="git status -uno"
+alias gch="git checkout"
+alias gsh="git show"
+
+
 commit() {
     local cmd="$*"
         git commit -a -m "$($cmd | tee /dev/tty)" -m "$cmd" --allow-empty
@@ -36,7 +49,7 @@ histrun() {
     history -s "$(history | grep -vE "history|histrun" | grep -oE "$1.*$" | tail -n 1)"
 }
 
-git-ls() {
+gitls() {
     FILES="$(git ls-tree --name-only HEAD .)"
     MAXLEN=0
     IFS="$(printf "\n\b")"
