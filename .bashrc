@@ -15,7 +15,7 @@ alias tback='f() { dir=$(basename $(pwd)); docker run --network none -v .:/mcp_s
 alias tfront='f() { dir=$(basename $(pwd)); docker_id=$(docker run --network none -d -v .:/mcp_server/$dir -i $dir uv --offline --directory /mcp_server run $dir mcp) && echo "http://localhost:5000/app?container_id=$docker_id&problem_id=${1:-train-sae-basic-strong-hint}&max_tokens=64000"; }; f' 
 alias ttag='f() { docker tag "$1" "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$2"; }; f'
 alias tpush='f() { docker push "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$1"; }; f'
-alias tlist='f() { gcloud artifacts docker images list us-east1-docker.pkg.dev/gcp-taiga/dmodel }; f'
+alias tlist='gcloud artifacts docker images list us-east1-docker.pkg.dev/gcp-taiga/dmodel'
 alias tpull='f() { docker pull "us-east1-docker.pkg.dev/gcp-taiga/dmodel/$1"; }; f'
 alias shit='sudo $(fc -ln -1)' #for when you forget to sudo
 alias ro='$(`fc -e -`)' # execute last output
@@ -37,6 +37,9 @@ alias gs="git status"
 alias gsu="git status -uno"
 alias gch="git checkout"
 alias gsh="git show"
+alias gshn="git show --name-status"
+alias gd="git diff"
+alias gdn="git diff --name-status"
 
 alias ll='ls -lA'
 alias lf='ls -lAf'
