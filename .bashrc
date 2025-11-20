@@ -38,6 +38,22 @@ alias gsu="git status -uno"
 alias gch="git checkout"
 alias gsh="git show"
 
+alias ll='ls -lA'
+alias lf='ls -lAf'
+alias lfr='ls -lAfr'
+alias fn='find . -name'
+alias rg='rg -i'
+
+#literally just for cd/ls typos
+#function cd() { builtin cd "$@" && ls; }
+function cl() { pushd "$@" && ls; }
+function ccd() { pushd "$@" && ls; }
+function d() { pushd "$@" && ls; }
+#function cla() { builtin cd "$@" && ls -la; }
+function sl() { ls; }
+function lsc() { ls; }
+
+
 
 commit() {
     local cmd="$*"
@@ -108,20 +124,6 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-#literally just for cd/ls typos
-#function cd() { builtin cd "$@" && ls; }
-function cl() { pushd "$@" && ls; }
-function ccd() { pushd "$@" && ls; }
-function d() { pushd "$@" && ls; }
-#function cla() { builtin cd "$@" && ls -la; }
-function sl() { ls; }
-function lsc() { ls; }
-
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -170,9 +172,9 @@ shopt -s checkwinsize
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-# don't put duplicate lines or lines starting with space in the history.
+# don't put duplicate lines
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+HISTCONTROL=ignoredups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
