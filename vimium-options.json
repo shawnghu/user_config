@@ -1,0 +1,5 @@
+{
+  "keyMappings": "unmapAll\n\n# Find\nmap / enterFindMode\nmap n performFind\nmap N performBackwardsFind\n\n# Modes\nmap i enterInsertMode\nmap v enterVisualMode\nmap V enterVisualLineMode\n\n# Link hints\nmap f LinkHints.activateMode\nmap F LinkHints.activateModeToCopyLinkUrl\nmap Y LinkHints.activateModeToCopyLinkUrl\nmap t LinkHints.activateModeToOpenInNewTab\nmap T LinkHints.activateModeToOpenInNewForegroundTab\n\n# more link behaviors\nmap h LinkHints.activateMode action=hover\nmap I LinkHints.activateMode action=focus\nmap y LinkHints.activateMode action=copy-text",
+  "linkHintCharacters": "sadfjklewcmgh",
+  "settingsVersion": "2.3.1"
+}
