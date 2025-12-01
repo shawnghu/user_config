@@ -1,0 +1,71 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+;; ┌─────────────────────────────────────────────────────────────────┐
+;; │ PHYSICAL KEYS                                                   │
+;; │ Arranged to match keyboard layout for visual verification       │
+;; └─────────────────────────────────────────────────────────────────┘
+(defsrc
+  esc
+       1    2    3    4    5    6    7    8    9    0    -    =   bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '   ret
+  lsft z    x    c    v    b    n    m    ,    .    /   rsft
+                         spc
+  up down left rght
+)
+
+;; ┌─────────────────────────────────────────────────────────────────┐
+;; │ ALIASES                                                         │
+;; └─────────────────────────────────────────────────────────────────┘
+(defalias
+  ext (tap-hold-press 200 200 esc (layer-toggle extend))
+  bk A-left   ;; Browser back: Alt + Left
+  fw A-rght   ;; Browser forward: Alt + Right
+)
+
+;; ┌─────────────────────────────────────────────────────────────────┐
+;; │ DEFAULT LAYER                                                   │
+;; │ Only Caps Lock changes; everything else passes through          │
+;; └─────────────────────────────────────────────────────────────────┘
+(deflayer default
+  XX
+       _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  @ext _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+                         _
+  XX XX XX XX 
+)
+
+;; ┌─────────────────────────────────────────────────────────────────┐
+;; │ EXTEND LAYER                                                    │
+;; │                                                                 │
+;; │ Number row:  F1   F2   F3   F4   F5   F6   F7   F8   F9  F10 ...│
+;; │ Top row:     Esc  .   Back Fwd  .   PgUp Home Up  End  Del ... │
+;; │ Home row:    Alt  .   Shft Ctrl .   PgDn Left Down Rght Bksp ...│
+;; │ Bottom row:  Undo Cut Copy Paste .    .    .    .    .    .     │
+;; │ Space:       Enter                                              │
+;; └─────────────────────────────────────────────────────────────────┘
+(deflayer extend
+  caps
+  ;;   1    2    3    4    5    6    7    8    9    0    -    =   bspc
+       _    _    _    _    _    _    _    _    _   _   _   _  brk
+
+  ;;   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  ;;   ---  Esc  --- Back Fwd  --- PgUp Home Up   End  Del  Esc  Ins PrtSc
+       _   esc   _  @bk  @fw   _  pgup home  up  end  del  esc  ins prnt
+
+  ;;   caps a    s    d    f    g    h    j    k    l    ;    '   ret
+  ;;   EXT  Alt  --- Shft Ctrl --- PgDn Left Down Rght Bksp Menu ---
+       _  lalt   _  lsft lctl   _  pgdn left down rght bspc menu  _
+
+  ;;   lsft z    x    c    v    b    n    m    ,    .    /   rsft
+  ;;   ---  Undo Cut  Copy Pste ---  ---  ---  ---  ---  ---  ---
+       _   C-z  C-x  C-c  C-v   _    _    _    _    _    _    _
+
+  ;;   Space = Enter
+                        ret
+  XX XX XX XX 
+)
