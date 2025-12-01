@@ -1,0 +1,60 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defsrc
+  esc
+       1    2    3    4    5    6    7    8    9    0    -    =   bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '   ret
+  lsft z    x    c    v    b    n    m    ,    .    /   rsft
+                         spc
+  up down left rght
+)
+
+(defalias
+  ext (tap-hold-press 200 200 esc (layer-toggle extend))
+  bk A-left   ;; Browser back: Alt + Left
+  fw A-rght   ;; Browser forward: Alt + Right
+
+  ;; Mouse movement
+  msu (movemouse-accel-up 8 2200 2 12)
+  msd (movemouse-accel-down 8 2200 2 12)
+  msl (movemouse-accel-left 8 2200 2 12)
+  msr (movemouse-accel-right 8 2200 2 12)
+
+  ;; Mouse wheel
+  mwu (mwheel-accel-up 20 1200 1.01 0)
+  mwd (mwheel-accel-down 20 1200 1.01 0)
+)
+
+(deflayer default
+  XX
+       _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  @ext _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+                         _
+  XX XX XX XX
+)
+
+(deflayer extend
+  caps
+  ;;   1    2    3    4    5    6    7    8    9    0    -    =   bspc
+       f6   f2  @bk  @fw   _    _    _    _    _    _    _    _   brk
+
+  ;;   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  ;;  AltF6 Esc  MsUp WhUp WhDn  ~  PgUp Home Up   End  Del  Esc  Ins PrtSc
+    A-f6  esc @msu @mwu @mwd S-grv pgup home  up  end  del  esc  ins prnt
+
+  ;;   caps a    s    d    f    g    h    j    k    l    ;    '   ret
+  ;;   EXT MsLf MsDn MsRt Ctrl Shft PgDn Left Down Rght Bksp Menu ---
+       _ @msl @msd @msr lctl lsft pgdn left down rght bspc menu  _
+
+  ;;   lsft z    x    c    v    b    n    m    ,    .    /   rsft
+  ;;   ---  Undo Cut  Copy Pste ---  ---  ---  ---  ---  ---  ---
+       _   C-z  C-x  C-c  C-v   _    _    _    _    _    _    _
+
+                        ret
+  XX XX XX XX
+)
