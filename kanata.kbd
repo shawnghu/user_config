@@ -4,7 +4,7 @@
 
 (defsrc
   esc
-       1    2    3    4    5    6    7    8    9    0    -    =   bspc
+  `    1    2    3    4    5    6    7    8    9    0    -    =   bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   caps a    s    d    f    g    h    j    k    l    ;    '   ret
   lsft z    x    c    v    b    n    m    ,    .    /   rsft
@@ -13,7 +13,7 @@
 )
 
 (defalias
-  ext (tap-hold-press 200 200 esc (layer-toggle extend))
+  ext (layer-toggle extend)
   bk A-left   ;; Browser back: Alt + Left
   fw A-rght   ;; Browser forward: Alt + Right
 
@@ -30,7 +30,7 @@
 
 (deflayer default
   XX
-       _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   @ext _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _
@@ -40,20 +40,20 @@
 
 (deflayer extend
   caps
-  ;;   1    2    3    4    5    6    7    8    9    0    -    =   bspc
-       f6   f2  @bk  @fw   _    _    _    _    _    _    _    _   brk
+  ;; `     1    2    3    4    5    6    7    8    9    0    -    =   bspc
+     bspc  f6   f2  @bk  @fw   _    _    _    _    _    _    _    _   brk
 
   ;;   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   ;;  AltF6 Esc  MsUp WhUp WhDn  ~  PgUp Home Up   End  Del  Esc  Ins PrtSc
-    A-f6  esc @msu @mwu @mwd S-grv pgup home  up  end  del  esc  ins prnt
+    A-f6  esc @msu @mwu @mwd grv pgup home  up  end  del  esc  ins prnt
 
   ;;   caps a    s    d    f    g    h    j    k    l    ;    '   ret
   ;;   EXT MsLf MsDn MsRt Ctrl Shft PgDn Left Down Rght Bksp Menu ---
        _ @msl @msd @msr lctl lsft pgdn left down rght bspc menu  _
 
   ;;   lsft z    x    c    v    b    n    m    ,    .    /   rsft
-  ;;   ---  Undo Cut  Copy Pste ---  ---  ---  ---  ---  ---  ---
-       _   C-z  C-x  C-c  C-v   _    _    _    _    _    _    _
+  ;;   ---  Undo Cut  Copy Pste Lclk Mclk Rclk ---  ---  ---  ---
+       _   C-z  C-x  C-c  C-v  mlft mmid mrgt  _    _    _    _
 
                         ret
   XX XX XX XX

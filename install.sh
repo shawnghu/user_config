@@ -23,7 +23,7 @@ ln -s `pwd`/.claude_command_parser.py ~
 mkdir -p ~/.claude
 ln -s `pwd`/settings.json ~/.claude
 
-ln -s `pwd`/.config/kanata/kanata.kbd ~/kanata.kbd
+ln -s `pwd`/kanata.kbd ~/.config/kanata/kanata.kbd
 
 sudo apt update
 sudo apt install -y build-essential
