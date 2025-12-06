@@ -2,16 +2,10 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# Claude sandbox - run claude in a container with network firewall
+# Set CLAUDE_SANDBOX_FIREWALL=false to disable firewall
 csand() {
-  docker run -it --rm \
-    -v "$PWD":"$PWD" \
-    -v ~/.claude:/home/ubuntu/.claude \
-    -v ~/.claude.json:/home/ubuntu/.claude.json \
-    -w "$PWD" \
-    -e HOME=/home/ubuntu \
-    --user "$(id -u):$(id -g)" \
-    --name "claude-$(basename "$PWD")" \
-    claude-sandbox bash
+  ~/claude-sandbox/run.sh "${1:-.}"
 }
 # Alias definitions.
 # You may want to put all your additions into a separate file like

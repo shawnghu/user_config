@@ -36,9 +36,20 @@ command -v npm && echo "npm is installed" || sudo apt install -y npm || echo "np
 npm config set prefix '~/.npm-global'
 npm install -g @anthropic-ai/claude-code
 
-sudo apt install docker.io 
+sudo apt install docker.io
 sudo apt install docker-buildx
 sudo usermod -a -G docker $USER
+
+# Claude sandbox (containerized claude with network firewall)
+if [ ! -d ~/claude-sandbox ]; then
+    git clone https://github.com/shawnghu/claude-sandbox ~/claude-sandbox
+fi
+# Build requires docker group - may need to log out/in first if just added
+if groups | grep -q docker; then
+    ~/claude-sandbox/build.sh
+else
+    echo "NOTE: Log out and back in, then run ~/claude-sandbox/build.sh to build the sandbox image"
+fi
 
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
