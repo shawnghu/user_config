@@ -13,6 +13,7 @@ csand() {
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 alias xclip='xclip -selection clipboard'
+alias imtest='f() { docker run -it --entrypoint bash ${1:-bugfix_saelens}; }; f'
 alias dbash='f() { docker exec -it ${1:-$(docker ps | head -n 2 | tail -n 1 | cut -d " " -f 1)} /bin/bash; }; f'
 alias dstart='f() { docker start ${1:-$(docker ps -a | head -n 2 | tail -n 1 | cut -d " " -f 1)}; }; f'
 alias tback='f() { dir=$(basename $(pwd)); docker run -v .:/mcp_server/$dir -i $dir uv --offline --directory /mcp_server run $dir mcp; }; f'
@@ -461,5 +462,5 @@ export PATH=~/.npm-global/bin:$PATH
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-. "$HOME/.local/bin/env"
+[ -f ~/.local/bin/env ] && source ~/local/bin/env
 
