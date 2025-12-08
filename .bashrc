@@ -12,6 +12,8 @@ csand() {
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
+
+alias cdsp='claude --dangerously-skip-permissions'
 alias xclip='xclip -selection clipboard'
 alias imtest='f() { docker run -it --entrypoint bash ${1:-bugfix_saelens}; }; f'
 alias dbash='f() { docker exec -it ${1:-$(docker ps | head -n 2 | tail -n 1 | cut -d " " -f 1)} /bin/bash; }; f'
@@ -462,5 +464,4 @@ export PATH=~/.npm-global/bin:$PATH
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-[ -f ~/.local/bin/env ] && source ~/local/bin/env
-
+[ -f ~/.local/bin/env ] && source ~/.local/bin/env
