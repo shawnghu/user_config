@@ -474,6 +474,12 @@ inoremap <silent> <Down> <Esc>gja
 "set the left and right arrow keys to wrap to next line when at end fo line
 set whichwrap+=<,>,h,l,[,]
 
+"do the inverse thing
+nnoremap gj j
+nnoremap gk k
+vnoremap gj j
+vnoremap gk k
+
 "switch colon and semicolon in normal mode to save keystrokes on ex mode
 "commands
 nnoremap ; :
