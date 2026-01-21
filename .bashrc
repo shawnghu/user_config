@@ -14,6 +14,11 @@ csand() {
 
 
 alias cdsp='claude --dangerously-skip-permissions'
+alias cc='claude'
+alias ccr='claude -r'
+alias ccc='claude -c'
+alias ccdr='claude --dangerously-skip-permissions -r'
+alias ccdc='claude --dangerously-skip-permissions -c'
 alias xclip='xclip -selection clipboard'
 alias imtest='f() { docker run -it --entrypoint bash ${1:-bugfix_saelens}; }; f'
 alias dbash='f() { docker exec -it ${1:-$(docker ps | head -n 2 | tail -n 1 | cut -d " " -f 1)} /bin/bash; }; f'
@@ -467,3 +472,8 @@ export PATH=~/.npm-global/bin:$PATH
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 [ -f ~/.local/bin/env ] && source ~/.local/bin/env
+
+. "$HOME/.local/bin/env"
+if [[ -z "$TMUX" ]]; then
+    export TERM=xterm-256color
+fi
