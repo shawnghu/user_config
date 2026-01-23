@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(getfacl:*)",
+      "Bash(lsattr:*)",
+      "Bash(mount:*)"
+    ]
+  }
+}

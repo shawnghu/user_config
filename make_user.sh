@@ -11,7 +11,7 @@ fi
 sudo ln -sf /workspace /home/shawnghu
 sudo -u shawnghu mkdir /home/shawnghu/.ssh
 sudo cp ~/.ssh/authorized_keys /home/shawnghu/.ssh/authorized_keys
-sudo chmod 755 /home/shawnghu/.ssh/authorized_keys
+sudo chmod 600 /home/shawnghu/.ssh/authorized_keys
 sudo chown shawnghu /home/shawnghu/.ssh/authorized_keys
 sudo chgrp shawnghu /home/shawnghu/.ssh/authorized_keys
 
