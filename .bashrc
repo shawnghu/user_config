@@ -471,3 +471,9 @@ export PATH=~/.npm-global/bin:$PATH
 [ -f ~/.local/bin/env ] && source ~/.local/bin/env
 
 . "$HOME/.local/bin/env"
+runpod() {
+    local ip=$(echo "$@" | grep -oP '(?<=@)[0-9.]+')
+    local port=$(echo "$@" | grep -oP '(?<=-p )\d+')
+    sed -i '/^Host shard$/,/^Host /{s/^\(    HostName \).*/\1'"$ip"'/;s/^\(    Port \).*/\1'"$port"'/}' ~/.ssh/config
+    ssh shard
+}
