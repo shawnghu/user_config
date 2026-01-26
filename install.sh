@@ -16,7 +16,7 @@ ln -sf `pwd`/.bash_profile ~
 
 ln -s `pwd`/.vimrc ~
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
+vim -es +PluginInstall +qall
 
 ln -s `pwd`/.claude_bash_logger.sh ~
 ln -s `pwd`/.claude_command_parser.py ~
@@ -32,8 +32,8 @@ sudo apt install -y ripgrep
 
 curl -fsSL https://claude.ai/install.sh | bash
 
-sudo apt install docker.io
-sudo apt install docker-buildx
+sudo apt install -y docker.io
+sudo apt install -y docker-buildx
 sudo usermod -a -G docker $USER
 
 # Claude sandbox (containerized claude with network firewall)

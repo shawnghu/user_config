@@ -26,13 +26,35 @@
   ;; Mouse wheel
   mwu (mwheel-accel-up 20 1200 1.01 0)
   mwd (mwheel-accel-down 20 1200 1.01 0)
-)
 
+
+  ;; ijkl with workspace/window switching
+  ii (switch
+       ((and lctl lalt)) C-A-up break
+       ((and lmet lsft)) M-S-up break
+       (lmet) M-up break
+       () i break)
+  jj (switch
+       ((and lctl lalt)) C-A-left break
+       ((and lmet lsft)) M-S-left break
+       (lmet) M-left break
+       () j break)
+  kk (switch
+       ((and lctl lalt)) C-A-down break
+       ((and lmet lsft)) M-S-down break
+       (lmet) M-down break
+       () k break)
+  ll (switch
+       ((and lctl lalt)) C-A-right break
+       ((and lmet lsft)) M-S-right break
+       (lmet) M-right break
+       () l break)
+)
 (deflayer default
   XX
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  @ext _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _   @ii   _    _    _    _    _
+  @ext _    _    _    _    _    _   @jj  @kk  @ll   _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _
                          _
   XX XX XX XX

@@ -468,12 +468,27 @@ export PATH=~/.npm-global/bin:$PATH
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-[ -f ~/.local/bin/env ] && source ~/.local/bin/env
+# [ -f ~/.local/bin/env ] && source ~/.local/bin/env
 
 . "$HOME/.local/bin/env"
+
 runpod() {
-    local ip=$(echo "$@" | grep -oP '(?<=@)[0-9.]+')
-    local port=$(echo "$@" | grep -oP '(?<=-p )\d+')
-    sed -i '/^Host shard$/,/^Host /{s/^\(    HostName \).*/\1'"$ip"'/;s/^\(    Port \).*/\1'"$port"'/}' ~/.ssh/config
+    local ip="" port=""
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -p) port="$2"; shift 2 ;;
+            *@*) ip="${1#*@}"; shift ;;
+            *) shift ;;
+        esac
+    done
+    if [[ -z "$ip" ]]; then
+        echo "Could not parse IP address"
+        return 1
+    fi
+    if [[ -z "$port" ]]; then
+        echo "Could not parse port"
+        return 1
+    fi
+    sed -i "/^Host shard$/,/^Host / { s/^\(    HostName \).*/\1$ip/; s/^\(    Port \).*/\1$port/; }" ~/.ssh/config
     ssh shard
 }
