@@ -22,7 +22,7 @@ parse_config() {
         if [[ "$line" =~ ^\[(.+)\]$ ]]; then
             section="${BASH_REMATCH[1]}"
         elif [[ "$section" == "dirs" ]]; then
-            SYNC_DIRS+=("${line/#\~/$HOME_DIR_DIR}")
+            SYNC_DIRS+=("${line/#\~/$HOME_DIR}")
         elif [[ "$section" == "exclude" ]]; then
             EXCLUDE_PATTERNS+=("$line")
         elif [[ "$section" == "settings" && "$line" =~ ^([^=]+)=(.+)$ ]]; then
@@ -37,7 +37,7 @@ parse_config() {
     local tmp=("${SYNC_DIRS[@]}")
     SYNC_DIRS=()
     for d in "${tmp[@]}"; do
-        SYNC_DIRS+=("${d/#\~/$HOME_DIR_DIR}")
+        SYNC_DIRS+=("${d/#\~/$HOME_DIR}")
     done
 }
 
