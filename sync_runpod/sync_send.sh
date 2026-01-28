@@ -1,0 +1,72 @@
+#!/bin/bash
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG="$SCRIPT_DIR/sync_config.conf"
+
+# Parse config
+parse_config() {
+    local section=""
+    SYNC_DIRS=()
+    EXCLUDE_PATTERNS=()
+    MAX_SUBDIR_SIZE=1073741824
+    ARCHIVE_NAME="sync_bundle.tar.gz"
+
+    while IFS= read -r line; do
+        line="${line%%#*}"  # strip comments
+        line="${line%"${line##*[![:space:]]}"}"  # trim trailing
+        line="${line#"${line%%[![:space:]]*}"}"  # trim leading
+        [[ -z "$line" ]] && continue
+
+        if [[ "$line" =~ ^\[(.+)\]$ ]]; then
+            section="${BASH_REMATCH[1]}"
+        elif [[ "$section" == "dirs" ]]; then
+            SYNC_DIRS+=("$(eval echo "$line")")
+        elif [[ "$section" == "exclude" ]]; then
+            EXCLUDE_PATTERNS+=("$line")
+        elif [[ "$section" == "settings" && "$line" =~ ^([^=]+)=(.+)$ ]]; then
+            key="${BASH_REMATCH[1]}"
+            val="${BASH_REMATCH[2]}"
+            [[ "$key" == "max_subdir_size" ]] && MAX_SUBDIR_SIZE="$val"
+            [[ "$key" == "archive_name" ]] && ARCHIVE_NAME="$val"
+        fi
+    done < "$CONFIG"
+}
+
+parse_config
+
+# Build exclude args
+exclude_args=()
+for pattern in "${EXCLUDE_PATTERNS[@]}"; do
+    exclude_args+=(--exclude="$pattern")
+done
+
+# Find large subdirs to exclude
+for dir in "${SYNC_DIRS[@]}"; do
+    [[ -d "$dir" ]] || continue
+    while IFS= read -r subdir; do
+        size=$(du -sb "$subdir" 2>/dev/null | cut -f1)
+        if [[ "$size" -ge "$MAX_SUBDIR_SIZE" ]]; then
+            rel_path="${subdir#$HOME/}"
+            exclude_args+=(--exclude="$rel_path")
+            echo "Excluding large dir: $subdir ($(numfmt --to=iec $size))"
+        fi
+    done < <(find "$dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+done
+
+# Convert to paths relative to $HOME
+rel_dirs=()
+for dir in "${SYNC_DIRS[@]}"; do
+    [[ -d "$dir" ]] || { echo "Warning: $dir does not exist, skipping"; continue; }
+    rel_dirs+=("${dir#$HOME/}")
+done
+
+[[ ${#rel_dirs[@]} -eq 0 ]] && { echo "No directories to sync!"; exit 1; }
+
+echo "Creating archive..."
+cd "$HOME"
+tar -czvf "/tmp/$ARCHIVE_NAME" "${exclude_args[@]}" "${rel_dirs[@]}"
+
+echo "Archive created: /tmp/$ARCHIVE_NAME ($(du -h "/tmp/$ARCHIVE_NAME" | cut -f1))"
+echo "Sending via runpodctl..."
+runpodctl send "/tmp/$ARCHIVE_NAME"
