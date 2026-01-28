@@ -16,7 +16,7 @@ ln -sf `pwd`/.bash_profile ~
 
 ln -s `pwd`/.vimrc ~
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim -es +PluginInstall +qall
+echo | vim +PluginInstall +qall # this pipes a newline into vim to press enter to deal with an error dialog
 
 ln -s `pwd`/.claude_bash_logger.sh ~
 ln -s `pwd`/.claude_command_parser.py ~
