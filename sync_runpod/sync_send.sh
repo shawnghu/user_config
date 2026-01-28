@@ -11,7 +11,7 @@ parse_config() {
     EXCLUDE_PATTERNS=()
     MAX_SUBDIR_SIZE=1073741824
     ARCHIVE_NAME="sync_bundle.tar.gz"
-    HOME_DIR="/home/shawnghu"
+    HOME_DIR="/workspace"
 
     while IFS= read -r line; do
         line="${line%%#*}"  # strip comments

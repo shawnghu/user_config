@@ -6,7 +6,7 @@ CONFIG="$SCRIPT_DIR/sync_config.conf"
 
 # Parse config
 ARCHIVE_NAME="sync_bundle.tar.gz"
-HOME_DIR="/home/shawnghu"
+HOME_DIR="/workspace"
 while IFS= read -r line; do
     [[ "$line" =~ ^archive_name=(.+)$ ]] && ARCHIVE_NAME="${BASH_REMATCH[1]}"
     [[ "$line" =~ ^home_dir=(.+)$ ]] && HOME_DIR="${BASH_REMATCH[1]}"
