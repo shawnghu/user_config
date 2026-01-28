@@ -4,13 +4,12 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG="$SCRIPT_DIR/sync_config.conf"
 
-# Parse config (just need archive_name)
+# Parse config
 ARCHIVE_NAME="sync_bundle.tar.gz"
+HOME_DIR="/home/shawnghu"
 while IFS= read -r line; do
-    if [[ "$line" =~ ^archive_name=(.+)$ ]]; then
-        ARCHIVE_NAME="${BASH_REMATCH[1]}"
-        break
-    fi
+    [[ "$line" =~ ^archive_name=(.+)$ ]] && ARCHIVE_NAME="${BASH_REMATCH[1]}"
+    [[ "$line" =~ ^home_dir=(.+)$ ]] && HOME_DIR="${BASH_REMATCH[1]}"
 done < "$CONFIG"
 
 ARCHIVE_PATH="/tmp/$ARCHIVE_NAME"
@@ -37,7 +36,7 @@ fi
 echo "Checking for conflicts..."
 conflicts=()
 while IFS= read -r entry; do
-    target="$HOME/$entry"
+    target="$HOME_DIR/$entry"
     [[ -e "$target" ]] && conflicts+=("$target")
 done < <(tar -tzf "$ARCHIVE_PATH" | grep -v '/$' | head -20)
 
@@ -50,11 +49,11 @@ if [[ ${#conflicts[@]} -gt 0 ]]; then
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         echo "Aborting. Archive preserved at: $ARCHIVE_PATH"
-        echo "Manual extract: tar -xzvf $ARCHIVE_PATH -C \$HOME"
+        echo "Manual extract: tar -xzvf $ARCHIVE_PATH -C \$HOME_DIR"
         exit 0
     fi
 fi
 
-echo "Extracting to $HOME..."
-tar -xzvf "$ARCHIVE_PATH" -C "$HOME"
+echo "Extracting to $HOME_DIR..."
+tar -xzvf "$ARCHIVE_PATH" -C "$HOME_DIR"
 echo "Done. Archive at: $ARCHIVE_PATH"

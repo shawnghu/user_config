@@ -11,6 +11,7 @@ parse_config() {
     EXCLUDE_PATTERNS=()
     MAX_SUBDIR_SIZE=1073741824
     ARCHIVE_NAME="sync_bundle.tar.gz"
+    HOME_DIR="/home/shawnghu"
 
     while IFS= read -r line; do
         line="${line%%#*}"  # strip comments
@@ -21,7 +22,7 @@ parse_config() {
         if [[ "$line" =~ ^\[(.+)\]$ ]]; then
             section="${BASH_REMATCH[1]}"
         elif [[ "$section" == "dirs" ]]; then
-            SYNC_DIRS+=("$(eval echo "$line")")
+            SYNC_DIRS+=("${line/#\~/$HOME_DIR_DIR}")
         elif [[ "$section" == "exclude" ]]; then
             EXCLUDE_PATTERNS+=("$line")
         elif [[ "$section" == "settings" && "$line" =~ ^([^=]+)=(.+)$ ]]; then
@@ -29,8 +30,15 @@ parse_config() {
             val="${BASH_REMATCH[2]}"
             [[ "$key" == "max_subdir_size" ]] && MAX_SUBDIR_SIZE="$val"
             [[ "$key" == "archive_name" ]] && ARCHIVE_NAME="$val"
+            [[ "$key" == "home_dir" ]] && HOME_DIR="$val"
         fi
     done < "$CONFIG"
+    # Re-expand dirs now that HOME_DIR is set
+    local tmp=("${SYNC_DIRS[@]}")
+    SYNC_DIRS=()
+    for d in "${tmp[@]}"; do
+        SYNC_DIRS+=("${d/#\~/$HOME_DIR_DIR}")
+    done
 }
 
 parse_config
@@ -47,24 +55,24 @@ for dir in "${SYNC_DIRS[@]}"; do
     while IFS= read -r subdir; do
         size=$(du -sb "$subdir" 2>/dev/null | cut -f1)
         if [[ "$size" -ge "$MAX_SUBDIR_SIZE" ]]; then
-            rel_path="${subdir#$HOME/}"
+            rel_path="${subdir#$HOME_DIR/}"
             exclude_args+=(--exclude="$rel_path")
             echo "Excluding large dir: $subdir ($(numfmt --to=iec $size))"
         fi
     done < <(find "$dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
 done
 
-# Convert to paths relative to $HOME
+# Convert to paths relative to $HOME_DIR
 rel_dirs=()
 for dir in "${SYNC_DIRS[@]}"; do
     [[ -d "$dir" ]] || { echo "Warning: $dir does not exist, skipping"; continue; }
-    rel_dirs+=("${dir#$HOME/}")
+    rel_dirs+=("${dir#$HOME_DIR/}")
 done
 
 [[ ${#rel_dirs[@]} -eq 0 ]] && { echo "No directories to sync!"; exit 1; }
 
 echo "Creating archive..."
-cd "$HOME"
+cd "$HOME_DIR"
 tar -czvf "/tmp/$ARCHIVE_NAME" "${exclude_args[@]}" "${rel_dirs[@]}"
 
 echo "Archive created: /tmp/$ARCHIVE_NAME ($(du -h "/tmp/$ARCHIVE_NAME" | cut -f1))"
