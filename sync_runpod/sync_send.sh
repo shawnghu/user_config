@@ -8,6 +8,7 @@ CONFIG="$SCRIPT_DIR/sync_config.conf"
 parse_config() {
     local section=""
     SYNC_DIRS=()
+    SYNC_FILES=()
     EXCLUDE_PATTERNS=()
     MAX_SUBDIR_SIZE=10737418240
     ARCHIVE_NAME="sync_bundle.tar.gz"
@@ -23,6 +24,8 @@ parse_config() {
             section="${BASH_REMATCH[1]}"
         elif [[ "$section" == "dirs" ]]; then
             SYNC_DIRS+=("${line/#\~/$HOME_DIR}")
+        elif [[ "$section" == "files" ]]; then
+            SYNC_FILES+=("${line/#\~/$HOME_DIR}")
         elif [[ "$section" == "exclude" ]]; then
             EXCLUDE_PATTERNS+=("$line")
         elif [[ "$section" == "settings" && "$line" =~ ^([^=]+)=(.+)$ ]]; then
@@ -33,11 +36,16 @@ parse_config() {
             [[ "$key" == "home_dir" ]] && HOME_DIR="$val"
         fi
     done < "$CONFIG"
-    # Re-expand dirs now that HOME_DIR is set
+    # Re-expand paths now that HOME_DIR is set
     local tmp=("${SYNC_DIRS[@]}")
     SYNC_DIRS=()
     for d in "${tmp[@]}"; do
         SYNC_DIRS+=("${d/#\~/$HOME_DIR}")
+    done
+    tmp=("${SYNC_FILES[@]}")
+    SYNC_FILES=()
+    for f in "${tmp[@]}"; do
+        SYNC_FILES+=("${f/#\~/$HOME_DIR}")
     done
 }
 
@@ -63,17 +71,21 @@ for dir in "${SYNC_DIRS[@]}"; do
 done
 
 # Convert to paths relative to $HOME_DIR
-rel_dirs=()
+rel_paths=()
 for dir in "${SYNC_DIRS[@]}"; do
     [[ -d "$dir" ]] || { echo "Warning: $dir does not exist, skipping"; continue; }
-    rel_dirs+=("${dir#$HOME_DIR/}")
+    rel_paths+=("${dir#$HOME_DIR/}")
+done
+for file in "${SYNC_FILES[@]}"; do
+    [[ -f "$file" ]] || { echo "Warning: $file does not exist, skipping"; continue; }
+    rel_paths+=("${file#$HOME_DIR/}")
 done
 
-[[ ${#rel_dirs[@]} -eq 0 ]] && { echo "No directories to sync!"; exit 1; }
+[[ ${#rel_paths[@]} -eq 0 ]] && { echo "Nothing to sync!"; exit 1; }
 
 echo "Creating archive..."
 cd "$HOME_DIR"
-tar -czvf "/tmp/$ARCHIVE_NAME" "${exclude_args[@]}" "${rel_dirs[@]}"
+tar -czvf "/tmp/$ARCHIVE_NAME" "${exclude_args[@]}" "${rel_paths[@]}"
 
 echo "Archive created: /tmp/$ARCHIVE_NAME ($(du -h "/tmp/$ARCHIVE_NAME" | cut -f1))"
 echo "Sending via runpodctl..."
