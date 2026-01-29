@@ -9,7 +9,7 @@ parse_config() {
     local section=""
     SYNC_DIRS=()
     EXCLUDE_PATTERNS=()
-    MAX_SUBDIR_SIZE=1073741824
+    MAX_SUBDIR_SIZE=10737418240
     ARCHIVE_NAME="sync_bundle.tar.gz"
     HOME_DIR="/workspace"
 
