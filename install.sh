@@ -49,6 +49,15 @@ fi
 
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
+# age encryption (for secrets)
+if ! command -v age &>/dev/null; then
+    curl -LO https://github.com/FiloSottile/age/releases/download/v1.2.0/age-v1.2.0-linux-amd64.tar.gz
+    tar xzf age-v1.2.0-linux-amd64.tar.gz
+    mkdir -p ~/.local/bin
+    mv age/age age/age-keygen ~/.local/bin/
+    rm -rf age age-v1.2.0-linux-amd64.tar.gz
+fi
+
 touch ~/.Xauthority
 
 curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
@@ -57,4 +66,43 @@ zoxide init --cmd cd bash
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all # untested; these might conflict
 
+# install runpodctl
+curl -sSL https://runpod.io/install.sh | bash
 
+# Configure API keys from encrypted secrets
+if command -v age &>/dev/null && [ -f "$(dirname "$0")/secrets.age" ]; then
+    echo "Configuring services from encrypted secrets..."
+    if eval "$(age -d -i ~/.ssh/id_ed25519 "$(dirname "$0")/secrets.age" 2>/dev/null)"; then
+        # Hugging Face
+        if [ -n "$HF_TOKEN" ]; then
+            if command -v huggingface-cli &>/dev/null; then
+                huggingface-cli login --token "$HF_TOKEN" --add-to-git-credential
+                echo "  huggingface-cli: configured"
+            else
+                echo "  huggingface-cli: not installed, skipping"
+            fi
+        fi
+        # Weights & Biases
+        if [ -n "$WANDB_API_KEY" ]; then
+            if command -v wandb &>/dev/null; then
+                wandb login --relogin "$WANDB_API_KEY"
+                echo "  wandb: configured"
+            else
+                echo "  wandb: not installed, skipping"
+            fi
+        fi
+        # RunPod
+        if [ -n "$RUNPOD_API_KEY" ]; then
+            if command -v runpodctl &>/dev/null; then
+                runpodctl config --apiKey="$RUNPOD_API_KEY"
+                echo "  runpodctl: configured"
+            else
+                echo "  runpodctl: not installed, skipping"
+            fi
+        fi
+    else
+        echo "  Failed to decrypt secrets (SSH key not available?)"
+    fi
+else
+    echo "Skipping service configuration (age or secrets.age not found)"
+fi

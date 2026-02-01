@@ -448,6 +448,14 @@ export PS1="${PS1%?}\$(parse_git_branch)\[\033[00m\] "
 
 export PATH="~/.local/bin:$PATH"
 
+export MAX_JOBS=40
+
+# Decrypt and source secrets (fails gracefully if key unavailable)
+if command -v age &>/dev/null && [ -f ~/user_config/secrets.age ]; then
+    _secrets=$(age -d -i ~/.ssh/id_ed25519 ~/user_config/secrets.age 2>/dev/null) && eval "$_secrets"
+    unset _secrets
+fi
+
 # put timestamps in history file
 export HISTTIMEFORMAT="%d/%m/%y %T "
 
