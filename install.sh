@@ -67,7 +67,7 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all # untested; these might conflict
 
 # install runpodctl
-curl -sSL https://runpod.io/install.sh | bash
+sudo wget --quiet --show-progress https://github.com/Run-Pod/runpodctl/releases/download/v1.14.3/runpodctl-linux-amd64 -O runpodctl && chmod +x runpodctl && sudo cp runpodctl /usr/bin/runpodctl
 
 # Configure API keys from encrypted secrets
 if command -v age &>/dev/null && [ -f "$(dirname "$0")/secrets.age" ]; then
