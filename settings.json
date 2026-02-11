@@ -1,4 +1,13 @@
 {
+  "extraKnownMarketplaces": {
+    "alignment-hive": {
+      "source": {"source": "github", "repo": "Crazytieguy/alignment-hive"},
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "hive-mind@alignment-hive": true
+  },
   "permissions": {
     "allow": [
       "Bash(git*)",

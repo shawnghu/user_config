@@ -49,6 +49,9 @@ fi
 
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
+# bun (required for hive-mind plugin)
+curl -fsSL https://bun.sh/install | bash
+
 # age encryption (for secrets)
 if ! command -v age &>/dev/null; then
     curl -LO https://github.com/FiloSottile/age/releases/download/v1.2.0/age-v1.2.0-linux-amd64.tar.gz
