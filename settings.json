@@ -49,5 +49,10 @@
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "hive-mind@alignment-hive": true,
+    "frontend-design@claude-plugins-official": true
+  },
+  "skipDangerousModePermissionPrompt": true
 }
