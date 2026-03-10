@@ -40,7 +40,8 @@ VOLUME_SIZE=1000
 NAME_PREFIX=""
 GPU_TYPE="NVIDIA H200"
 GPU_COUNT=1
-IMAGE="runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04"
+MEMORY_GB=32
+IMAGE="runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404"
 DATACENTER=""
 TEMPLATE_ID=""
 MIGRATE_FROM=""
@@ -50,7 +51,7 @@ DRY_RUN=false
 NO_WAIT=false
 PRESET=""
 IS_CPU_POD=false
-VCPU_COUNT=0
+VCPU_COUNT=4
 EXISTING_VOLUME_ID=""
 
 # Standard HTTP ports to expose
@@ -63,6 +64,7 @@ apply_preset() {
         cpu)
             IS_CPU_POD=true
             VCPU_COUNT=16
+            MEMORY_GB=32
             GPU_COUNT=0
             GPU_TYPE=""
             IMAGE="runpod/ubuntu:24.04"
@@ -71,13 +73,17 @@ apply_preset() {
         1h100)
             GPU_TYPE="NVIDIA H100 80GB HBM3"
             GPU_COUNT=1
-            IMAGE="runpod/pytorch:2.8.0-py3.11-cuda12.4.1-devel-ubuntu22.04"
+            VCPU_COUNT=24
+            MEMORY_GB=377
+            IMAGE="runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404"
             [ -z "$NAME_PREFIX" ] && NAME_PREFIX="shawn-1h100-$(date +%Y%m%d-%H%M)"
             ;;
         2h100)
             GPU_TYPE="NVIDIA H100 80GB HBM3"
             GPU_COUNT=2
-            IMAGE="runpod/pytorch:2.8.0-py3.11-cuda12.4.1-devel-ubuntu22.04"
+            VCPU_COUNT=24
+            MEMORY_GB=377
+            IMAGE="runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404"
             [ -z "$NAME_PREFIX" ] && NAME_PREFIX="shawn-2h100-$(date +%Y%m%d-%H%M)"
             ;;
         *)
@@ -301,6 +307,7 @@ if [ "$IS_CPU_POD" = true ]; then
         --arg volumeId "$VOLUME_ID" \
         --arg datacenter "$DATACENTER" \
         --argjson vcpuCount "$VCPU_COUNT" \
+        --argjson memoryGb "$MEMORY_GB" \
         --argjson ports "$PORTS_JSON" \
         --arg templateId "$TEMPLATE_ID" \
         '{
@@ -311,7 +318,7 @@ if [ "$IS_CPU_POD" = true ]; then
             dataCenterPriority: "custom",
             gpuCount: 0,
             vcpuCount: $vcpuCount,
-            memoryInGb: 64,
+            memoryInGb: $memoryGb,
             volumeInGb: 0,
             containerDiskInGb: 50,
             ports: $ports,
@@ -327,6 +334,8 @@ else
         --arg datacenter "$DATACENTER" \
         --arg gpuType "$GPU_TYPE" \
         --argjson gpuCount "$GPU_COUNT" \
+        --argjson vcpuCount "$VCPU_COUNT" \
+        --argjson memoryGb "$MEMORY_GB" \
         --argjson ports "$PORTS_JSON" \
         --arg templateId "$TEMPLATE_ID" \
         '{
@@ -338,6 +347,8 @@ else
             gpuTypeIds: [$gpuType],
             gpuTypePriority: "custom",
             gpuCount: $gpuCount,
+            vcpuCount: $vcpuCount,
+            memoryInGb: $memoryGb,
             volumeInGb: 0,
             containerDiskInGb: 50,
             ports: $ports,
