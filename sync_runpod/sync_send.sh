@@ -10,7 +10,7 @@ parse_config() {
     SYNC_DIRS=()
     SYNC_FILES=()
     EXCLUDE_PATTERNS=()
-    MAX_SUBDIR_SIZE=10737418240
+    MAX_SUBDIR_SIZE=1000737418240
     ARCHIVE_NAME="sync_bundle.tar.gz"
     HOME_DIR="/workspace"
 
@@ -83,10 +83,12 @@ done
 
 [[ ${#rel_paths[@]} -eq 0 ]] && { echo "Nothing to sync!"; exit 1; }
 
+ARCHIVE_PATH="$HOME_DIR/$ARCHIVE_NAME"
+
 echo "Creating archive..."
 cd "$HOME_DIR"
-tar -czvf "/tmp/$ARCHIVE_NAME" "${exclude_args[@]}" "${rel_paths[@]}"
+tar -czvf "$ARCHIVE_PATH" "${exclude_args[@]}" "${rel_paths[@]}"
 
-echo "Archive created: /tmp/$ARCHIVE_NAME ($(du -h "/tmp/$ARCHIVE_NAME" | cut -f1))"
+echo "Archive created: $ARCHIVE_PATH ($(du -h "$ARCHIVE_PATH" | cut -f1))"
 echo "Sending via runpodctl..."
-runpodctl send "/tmp/$ARCHIVE_NAME"
+runpodctl send "$ARCHIVE_PATH"
