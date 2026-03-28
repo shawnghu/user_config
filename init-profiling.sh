@@ -1,8 +1,12 @@
 # su root
 # need -A
-git clone git@github.com:shawnghu/user_config.git 
+ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+git clone git@github.com:shawnghu/user_config.git
 cd user_config
 ./install.sh
+cd sync_server
+./sync.sh &
+cd
 git clone git@github.com:ariahw/rl-rewardhacking-private.git
 cd rl-rewardhacking-private/
 source commands.sh 
