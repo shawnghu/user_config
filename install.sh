@@ -52,15 +52,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 # bun (required for hive-mind plugin)
 curl -fsSL https://bun.sh/install | bash
 
-# age encryption (for secrets)
-if ! command -v age &>/dev/null; then
-    curl -LO https://github.com/FiloSottile/age/releases/download/v1.2.0/age-v1.2.0-linux-amd64.tar.gz
-    tar xzf age-v1.2.0-linux-amd64.tar.gz
-    mkdir -p ~/.local/bin
-    mv age/age age/age-keygen ~/.local/bin/
-    rm -rf age age-v1.2.0-linux-amd64.tar.gz
-fi
-
 touch ~/.Xauthority
 
 curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
@@ -70,8 +61,20 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all # untested; these might conflict
 
 # install runpodctl
-sudo wget --quiet --show-progress https://github.com/Run-Pod/runpodctl/releases/download/v1.14.3/runpodctl-linux-amd64 -O runpodctl && chmod +x runpodctl && sudo cp runpodctl /usr/bin/runpodctl
+# if you need to install this the runpod is probably fucked
+# sudo wget --quiet --show-progress https://github.com/Run-Pod/runpodctl/releases/download/v1.14.3/runpodctl-linux-amd64 -O runpodctl && chmod +x runpodctl && sudo cp runpodctl /usr/bin/runpodctl
 
+# age encryption (for secrets)
+if ! command -v age &>/dev/null; then
+    curl -LO https://github.com/FiloSottile/age/releases/download/v1.2.0/age-v1.2.0-linux-amd64.tar.gz
+    tar xzf age-v1.2.0-linux-amd64.tar.gz
+    mkdir -p ~/.local/bin
+    mv age/age age/age-keygen ~/.local/bin/
+    rm -rf age age-v1.2.0-linux-amd64.tar.gz
+fi
+
+# TODO: make age work with a password instead, so that this will work
+# this doesn't work, since ssh-agent doesn't forward
 # Configure API keys from encrypted secrets
 if command -v age &>/dev/null && [ -f "$(dirname "$0")/secrets.age" ]; then
     echo "Configuring services from encrypted secrets..."
@@ -92,15 +95,6 @@ if command -v age &>/dev/null && [ -f "$(dirname "$0")/secrets.age" ]; then
                 echo "  wandb: configured"
             else
                 echo "  wandb: not installed, skipping"
-            fi
-        fi
-        # RunPod
-        if [ -n "$RUNPOD_API_KEY" ]; then
-            if command -v runpodctl &>/dev/null; then
-                runpodctl config --apiKey="$RUNPOD_API_KEY"
-                echo "  runpodctl: configured"
-            else
-                echo "  runpodctl: not installed, skipping"
             fi
         fi
     else
