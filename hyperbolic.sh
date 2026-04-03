@@ -2,6 +2,8 @@
 # git clone user config
 sudo adduser --disabled-password --gecos "" shawnghu
 sudo adduser shawnghu sudo
+# no passwd
+echo 'shawnghu ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/nopasswd
 
 rm -rf /home/shawnghu
 sudo ln -sf /workspace /home/shawnghu
