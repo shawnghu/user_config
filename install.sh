@@ -73,12 +73,10 @@ if ! command -v age &>/dev/null; then
     rm -rf age age-v1.2.0-linux-amd64.tar.gz
 fi
 
-# TODO: make age work with a password instead, so that this will work
-# this doesn't work, since ssh-agent doesn't forward
 # Configure API keys from encrypted secrets
 if command -v age &>/dev/null && [ -f "$(dirname "$0")/secrets.age" ]; then
     echo "Configuring services from encrypted secrets..."
-    if eval "$(age -d -i ~/.ssh/id_ed25519 "$(dirname "$0")/secrets.age" 2>/dev/null)"; then
+    if eval "$(age -d "$(dirname "$0")/secrets.age")"; then
         # Hugging Face
         if [ -n "$HF_TOKEN" ]; then
             if command -v huggingface-cli &>/dev/null; then
@@ -98,7 +96,7 @@ if command -v age &>/dev/null && [ -f "$(dirname "$0")/secrets.age" ]; then
             fi
         fi
     else
-        echo "  Failed to decrypt secrets (SSH key not available?)"
+        echo "  Failed to decrypt secrets"
     fi
 else
     echo "Skipping service configuration (age or secrets.age not found)"
