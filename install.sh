@@ -5,7 +5,7 @@ git config --global user.email shawnghu@gmail.com
 git config --global user.name "Shawn Hu"
 git config --global alias.rlog "reflog --date=format:'%Y-%m-%d %H:%M'"
 
-sudo apt install vim-gtk3
+sudo apt install -y vim-gtk3
 command -v tmux && echo "tmux is installed" || sudo apt install -y tmux || echo "tmux is NOT installed"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s `pwd`/.tmux.conf ~

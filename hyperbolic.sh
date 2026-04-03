@@ -22,3 +22,7 @@ curl -LO https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alac
 sudo tic -xe alacritty,alacritty-direct alacritty.info
 sudo sed -i 's/^#*StrictModes.*/StrictModes no/' /etc/ssh/sshd_config
 sudo service ssh reload
+
+chmod 777 /root
+
+ln -sfn /root/user_config /home/shawnghu/user_config
