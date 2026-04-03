@@ -3,6 +3,7 @@
 sudo adduser --disabled-password --gecos "" shawnghu
 sudo adduser shawnghu sudo
 
+rm -rf /home/shawnghu
 sudo ln -sf /workspace /home/shawnghu
 
 sudo chown -R shawnghu /workspace

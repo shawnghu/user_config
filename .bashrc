@@ -500,3 +500,18 @@ runpod() {
     sed -i "/^Host shard$/,/^Host / { s/^\(    HostName \).*/\1$ip/; s/^\(    Port \).*/\1$port/; }" ~/.ssh/config
     ssh shard
 }
+
+hyper() {
+    local ip=""
+    for arg in "$@"; do
+        case "$arg" in
+            *@*) ip="${arg#*@}" ;;
+        esac
+    done
+    if [[ -z "$ip" ]]; then
+        echo "Could not parse IP address"
+        return 1
+    fi
+    sed -i "/^Host shard2$/,/^Host / { s/^\(    HostName \).*/\1$ip/; }" ~/.ssh/config
+    ssh shard2
+}
