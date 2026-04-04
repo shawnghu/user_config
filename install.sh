@@ -65,6 +65,7 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # sudo wget --quiet --show-progress https://github.com/Run-Pod/runpodctl/releases/download/v1.14.3/runpodctl-linux-amd64 -O runpodctl && chmod +x runpodctl && sudo cp runpodctl /usr/bin/runpodctl
 
 # age encryption (for secrets)
+sudo apt install age
 if ! command -v age &>/dev/null; then
     curl -LO https://github.com/FiloSottile/age/releases/download/v1.2.0/age-v1.2.0-linux-amd64.tar.gz
     tar xzf age-v1.2.0-linux-amd64.tar.gz

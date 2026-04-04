@@ -4,7 +4,7 @@
 # cd user_config
 # ./install.sh
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-
+cd
 git clone git@github.com:ariahw/rl-rewardhacking-private.git
 cd rl-rewardhacking-private/
 source commands.sh 
