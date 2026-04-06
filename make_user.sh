@@ -1,3 +1,4 @@
+
 sudo adduser --disabled-password --gecos "" shawnghu
 sudo adduser shawnghu sudo
 echo 'shawnghu ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/shawnghu
@@ -9,6 +10,8 @@ else
 fi
 
 sudo ln -sf "${DATA_DIR:-/workspace}" /home/shawnghu
+sudo chown -R shawnghu:shawnghu /workspace /home/shawnghu/ .
+
 sudo -u shawnghu mkdir /home/shawnghu/.ssh
 sudo cp ~/.ssh/authorized_keys /home/shawnghu/.ssh/authorized_keys
 sudo chmod 600 /home/shawnghu/.ssh/authorized_keys
