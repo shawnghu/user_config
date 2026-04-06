@@ -64,41 +64,5 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # if you need to install this the runpod is probably fucked
 # sudo wget --quiet --show-progress https://github.com/Run-Pod/runpodctl/releases/download/v1.14.3/runpodctl-linux-amd64 -O runpodctl && chmod +x runpodctl && sudo cp runpodctl /usr/bin/runpodctl
 
-# age encryption (for secrets)
-sudo apt install age
-if ! command -v age &>/dev/null; then
-    curl -LO https://github.com/FiloSottile/age/releases/download/v1.2.0/age-v1.2.0-linux-amd64.tar.gz
-    tar xzf age-v1.2.0-linux-amd64.tar.gz
-    mkdir -p ~/.local/bin
-    mv age/age age/age-keygen ~/.local/bin/
-    rm -rf age age-v1.2.0-linux-amd64.tar.gz
-fi
-
-# Configure API keys from encrypted secrets
-if command -v age &>/dev/null && [ -f "$(dirname "$0")/secrets.age" ]; then
-    echo "Configuring services from encrypted secrets..."
-    if eval "$(age -d "$(dirname "$0")/secrets.age")"; then
-        # Hugging Face
-        if [ -n "$HF_TOKEN" ]; then
-            if command -v huggingface-cli &>/dev/null; then
-                huggingface-cli login --token "$HF_TOKEN" --add-to-git-credential
-                echo "  huggingface-cli: configured"
-            else
-                echo "  huggingface-cli: not installed, skipping"
-            fi
-        fi
-        # Weights & Biases
-        if [ -n "$WANDB_API_KEY" ]; then
-            if command -v wandb &>/dev/null; then
-                wandb login --relogin "$WANDB_API_KEY"
-                echo "  wandb: configured"
-            else
-                echo "  wandb: not installed, skipping"
-            fi
-        fi
-    else
-        echo "  Failed to decrypt secrets"
-    fi
-else
-    echo "Skipping service configuration (age or secrets.age not found)"
-fi
+# Install age and configure service logins from encrypted secrets
+"$(dirname "$0")/setup_service_auth.sh"
