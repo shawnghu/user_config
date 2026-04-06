@@ -480,6 +480,11 @@ export PATH=~/.npm-global/bin:$PATH
 
 . "$HOME/.local/bin/env"
 
+# Override container-level uv paths to use home directory
+export UV_CACHE_DIR="$HOME/.uv/cache"
+export UV_PYTHON_BIN_DIR="$HOME/.uv/python_bin"
+export UV_PYTHON_INSTALL_DIR="$HOME/.uv/python_install"
+
 runpod() {
     local ip="" port=""
     while [[ $# -gt 0 ]]; do
