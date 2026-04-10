@@ -6,7 +6,7 @@ CONFIG="$SCRIPT_DIR/sync_config.conf"
 
 # --- Parse config ---
 SSH_HOST="" SSH_PORT="" SSH_USER="" SSH_IDENTITY=""
-LOCAL_BASE="/root" REMOTE_BASE="/home/shawnghu" INTERVAL=60
+LOCAL_BASE="/home/shawnghu" REMOTE_BASE="/home/shawnghu" INTERVAL=60
 SYNC_DIRS=()    # each entry: "path"
 SYNC_EXCLUDES=() # each entry: space-separated exclude patterns (or empty)
 
@@ -47,7 +47,15 @@ parse_config() {
 
 parse_config
 
-SSH_CMD="ssh -p $SSH_PORT -i $SSH_IDENTITY -o StrictHostKeyChecking=accept-new"
+SSH_CMD="ssh -p $SSH_PORT -o StrictHostKeyChecking=accept-new"
+if [[ -n "$SSH_IDENTITY" && -f "$SSH_IDENTITY" ]]; then
+    SSH_CMD="$SSH_CMD -i $SSH_IDENTITY"
+elif [[ -n "$SSH_AUTH_SOCK" ]]; then
+    [[ -n "$SSH_IDENTITY" ]] && echo "Note: identity file '$SSH_IDENTITY' not present; using forwarded agent."
+else
+    echo "Error: no usable identity file and SSH_AUTH_SOCK is not set (no agent to forward)." >&2
+    exit 1
+fi
 SSH_DEST="$SSH_USER@$SSH_HOST"
 
 echo "=== shitty AWS ==="
@@ -89,10 +97,36 @@ sync_dir() {
     done
 }
 
+# --- Sync loop for a single file, renamed with a hostname suffix on the remote ---
+sync_file_suffixed() {
+    local rel="$1"        # path relative to $HOME on both sides
+    local suffix="$2"
+    local src="$HOME/$rel"
+    local dst="$SSH_DEST:$REMOTE_BASE/${rel}-${suffix}"
+
+    echo "[$$:$rel] Starting file sync loop -> ${rel}-${suffix}"
+    while true; do
+        if [[ -f "$src" ]]; then
+            rsync -az --append-verify -e "$SSH_CMD" \
+                "$src" "$dst" 2>&1 | while IFS= read -r line; do
+                    [[ -n "$line" ]] && echo "[$(date +%H:%M:%S) $rel] $line"
+                done
+        fi
+        sleep "$INTERVAL"
+    done
+}
+
 # --- Spawn a background sync loop per directory ---
 PIDS=()
 for i in "${!SYNC_DIRS[@]}"; do
     sync_dir "${SYNC_DIRS[$i]}" "${SYNC_EXCLUDES[$i]}" &
+    PIDS+=($!)
+done
+
+# --- Also sync bash history/log files, suffixed with the local hostname ---
+HOST_SUFFIX="$(hostname)"
+for f in .bash_eternal_history .bash_extended_log; do
+    sync_file_suffixed "$f" "$HOST_SUFFIX" &
     PIDS+=($!)
 done
 
