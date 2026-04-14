@@ -14,7 +14,11 @@ fi
 # Configure API keys from encrypted secrets
 if command -v age &>/dev/null && [ -f "$(dirname "$0")/secrets.age" ]; then
     echo "Configuring services from encrypted secrets..."
-    if eval "$(age -d "$(dirname "$0")/secrets.age")"; then
+    _decrypted=$(age -d "$(dirname "$0")/secrets.age")
+    if [ -n "$_decrypted" ]; then
+        (umask 077 && printf '%s\n' "$_decrypted" > ~/.secrets_env)
+        eval "$_decrypted"
+        unset _decrypted
         # Hugging Face
         if [ -n "$HF_TOKEN" ]; then
             uvx --from huggingface_hub huggingface-cli login --token "$HF_TOKEN" --add-to-git-credential

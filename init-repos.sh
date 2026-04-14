@@ -14,6 +14,8 @@ cd
 git clone git@github.com:shawnghu/small-rl.git
 cd small-rl
 # git checkout worktree-scale-up
+[ -f ~/.secrets_env ] && source ~/.secrets_env
+[ -n "$OPENAI_API_KEY" ] && (umask 077 && echo "OPENAI_API_KEY=$OPENAI_API_KEY" > .env)
 uv venv
 source .venv/bin/activate
 uv pip install -r pyproject.toml
