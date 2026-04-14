@@ -86,7 +86,7 @@ sync_dir() {
             continue
         fi
 
-        rsync -az --ignore-existing --mkpath --info=progress2 --no-whole-file \
+        rsync -az --update --mkpath --info=progress2 --no-whole-file \
             "${rsync_excludes[@]}" \
             -e "$SSH_CMD" \
             "$src" "$dst" 2>&1 | while IFS= read -r line; do
