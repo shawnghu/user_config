@@ -1,8 +1,9 @@
 # su root
 # need -A
-# git clone git@github.com:shawnghu/user_config.git 
+# git clone git@github.com:shawnghu/user_config.git
 # cd user_config
 # ./install.sh
+"$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/sync_server/pull.sh"
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 cd
 git clone git@github.com:shawnghu/small-rl.git
