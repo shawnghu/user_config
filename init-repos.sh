@@ -15,7 +15,10 @@ cd
 cd small-rl
 # git checkout worktree-scale-up
 [ -f ~/.secrets_env ] && source ~/.secrets_env
-[ -n "$OPENAI_API_KEY" ] && (umask 077 && echo "OPENAI_API_KEY=$OPENAI_API_KEY" > .env)
+(umask 077 && {
+    [ -n "$OPENAI_API_KEY" ] && echo "OPENAI_API_KEY=$OPENAI_API_KEY"
+    [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ] && echo "CLAUDE_CODE_OAUTH_TOKEN=$CLAUDE_CODE_OAUTH_TOKEN"
+} > .env)
 uv venv
 source .venv/bin/activate
 uv pip install -r pyproject.toml
