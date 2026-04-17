@@ -75,6 +75,21 @@ alias lfr='ls -lAfr'
 alias fn='find . -name'
 alias rg='rg -i'
 
+alias rg='rg -i'
+alias up='cd ..'
+alias upp='cd ../..'
+alias uppp='cd ../../..'
+alias upppp='cd ../../../..'
+alias uppppp='cd ../../../../..'
+alias upppppp='cd ../../../../../..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+alias .......='cd ../../../../../..'
+
+#
 #literally just for cd/ls typos
 #function cd() { builtin cd "$@" && ls; }
 function cl() { pushd "$@" && ls; }
