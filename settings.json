@@ -1,20 +1,11 @@
 {
-  "extraKnownMarketplaces": {
-    "alignment-hive": {
-      "source": {"source": "github", "repo": "Crazytieguy/alignment-hive"},
-      "autoUpdate": true
-    }
-  },
-  "enabledPlugins": {
-    "hive-mind@alignment-hive": true
-  },
   "permissions": {
     "allow": [
       "Bash(git*)",
       "Bash(git:*)"
     ]
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
@@ -53,6 +44,15 @@
   "enabledPlugins": {
     "hive-mind@alignment-hive": true,
     "frontend-design@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "alignment-hive": {
+      "source": {
+        "source": "github",
+        "repo": "Crazytieguy/alignment-hive"
+      },
+      "autoUpdate": true
+    }
   },
   "skipDangerousModePermissionPrompt": true
 }
