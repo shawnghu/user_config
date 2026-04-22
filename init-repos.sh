@@ -33,4 +33,8 @@ uv sync
 source .venv/bin/activate
 uv run ./vllm_patches/apply.sh
 uv run ./setup_leetcode_eval_data.sh
+uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.1
+uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.2
+uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.3
+uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.4
 uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.5
