@@ -533,57 +533,6 @@ hyper() {
     ssh shard2
 }
 
-vast() {
-    local ip="" port=""
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            -p) port="$2"; shift 2 ;;
-            *@*) ip="${1#*@}"; shift ;;
-            *) shift ;;
-        esac
-    done
-    if [[ -z "$ip" ]]; then
-        echo "Could not parse IP address"
-        return 1
-    fi
-    if [[ -z "$port" ]]; then
-        echo "Could not parse port"
-        return 1
-    fi
-
-    # Replace (or create) the Host vast block in ~/.ssh/config
-    touch ~/.ssh/config
-    awk '/^Host vast$/ {skip=1; next} skip && /^Host / {skip=0} !skip {print}' ~/.ssh/config > ~/.ssh/config.tmp
-    mv ~/.ssh/config.tmp ~/.ssh/config
-    cat >> ~/.ssh/config <<EOF
-
-Host vast
-    HostName $ip
-    Port $port
-    IdentityFile ~/.ssh/id_ed25519
-    User shawnghu
-    ForwardAgent yes
-    LocalForward 9000 localhost:9000
-EOF
-    chmod 600 ~/.ssh/config
-
-    # Phase 1: root provisioning
-    ssh -o StrictHostKeyChecking=accept-new -p "$port" "root@$ip" bash -s <<'REMOTE' || return 1
-set -euxo pipefail
-touch ~/.no_auto_tmux
-cd /workspace
-apt install -y sudo git
-git clone https://github.com/shawnghu/user_config
-cd user_config
-git remote add ssh git@github.com:shawnghu/user_config.git
-./runpod.sh
-su shawnghu -c './install.sh'
-REMOTE
-
-    # Phase 2: shawnghu finish (-A for private git clone in init-repos.sh)
-    ssh -A -p "$port" "shawnghu@$ip" 'touch ~/.no_auto_tmux && cd /workspace/user_config && ./init-repos.sh' || return 1
-
-    echo "Provisioning complete. Run 'ssh vast' for an interactive session."
-}
+alias vast="$HOME/user_config/vast.sh"
 
 export RAYON_NUM_THREADS=4

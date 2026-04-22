@@ -9,3 +9,8 @@
 Session.vim
 SESSION.vim
 [._]*.un~
+
+# Secrets (never commit)
+password.txt
+.age-passphrase
+.secrets_env
