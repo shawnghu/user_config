@@ -7,12 +7,14 @@ set -e
 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/sync_server/pull.sh"
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 cd
-git clone git@github.com:shawnghu/small-rl.git
-git clone git@github.com:ariahw/rl-rewardhacking-private.git
+[ -d small-rl ] || git clone git@github.com:shawnghu/small-rl.git
+[ -d rl-rewardhacking-private ] || git clone git@github.com:ariahw/rl-rewardhacking-private.git
 cd rl-rewardhacking-private/
-source commands.sh 
-create_leetcode_dataset "simple_overwrite_tests"
-create_leetcode_dataset "simple_overwrite_tests_aware"
+source commands.sh
+# `|| true`: create_leetcode_dataset raises "Dataset already exists" on re-runs,
+# and we don't want that to abort the rest of the setup.
+create_leetcode_dataset "simple_overwrite_tests" || true
+create_leetcode_dataset "simple_overwrite_tests_aware" || true
 cd
 cd small-rl
 # git checkout worktree-scale-up
