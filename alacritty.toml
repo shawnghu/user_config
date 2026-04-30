@@ -1,0 +1,10 @@
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
+[[keyboard.bindings]]
+  key = "Space"
+  mods = "Control|Shift"
+  action = "ReceiveChar"   # or "None" to do nothing
+

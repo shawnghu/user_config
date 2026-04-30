@@ -2,6 +2,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 sudo apt install alacritty
 
+mkdir -p "$HOME/.config/alacritty"
+ln -sf "$SCRIPT_DIR/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
+
 # Build and install tabbed
 cd "$SCRIPT_DIR/tabbed" && sudo make clean install
 
