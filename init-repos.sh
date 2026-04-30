@@ -4,6 +4,9 @@
 # cd user_config
 # ./install.sh
 set -e
+export UV_CACHE_DIR="$HOME/.uv/cache"
+export UV_PYTHON_BIN_DIR="$HOME/.uv/python_bin"
+export UV_PYTHON_INSTALL_DIR="$HOME/.uv/python_install"
 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/sync_server/pull.sh"
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 cd

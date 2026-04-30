@@ -113,6 +113,9 @@ ssh "${SSH_OPTS[@]}" -p "$port" "shawnghu@$ip" 'chmod 600 ~/.ssh/id_ed25519'
 echo "=== Phase 2: shawnghu install + init-repos + sync tmux ==="
 ssh -A "${SSH_OPTS[@]}" -p "$port" "shawnghu@$ip" bash -s <<'REMOTE'
 set -euxo pipefail
+export UV_CACHE_DIR="$HOME/.uv/cache"
+export UV_PYTHON_BIN_DIR="$HOME/.uv/python_bin"
+export UV_PYTHON_INSTALL_DIR="$HOME/.uv/python_install"
 touch ~/.no_auto_tmux
 cd /workspace/user_config
 ./install.sh
