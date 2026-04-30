@@ -35,7 +35,7 @@ fi
 cd "$INSTALL_DIR"
 
 # Create venv and install Python deps
-uv venv
+uv venv --python 3.11
 source .venv/bin/activate
 uv pip install -r requirements.txt
 uv pip install PyGObject
