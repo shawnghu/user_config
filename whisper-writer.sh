@@ -29,7 +29,7 @@ if [ -d "$INSTALL_DIR" ]; then
     echo "Directory exists, pulling latest..."
     cd "$INSTALL_DIR" && git pull
 else
-    git clone https://github.com/savbell/whisper-writer "$INSTALL_DIR"
+    git clone git@github.com:shawnghu/whisper-writer.git "$INSTALL_DIR"
 fi
 
 cd "$INSTALL_DIR"
