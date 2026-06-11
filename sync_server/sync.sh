@@ -107,7 +107,7 @@ sync_file_suffixed() {
     echo "[$$:$rel] Starting file sync loop -> ${rel}-${suffix}"
     while true; do
         if [[ -f "$src" ]]; then
-            rsync -az --append-verify -e "$SSH_CMD" \
+            rsync -az --append-verify --mkpath -e "$SSH_CMD" \
                 "$src" "$dst" 2>&1 | while IFS= read -r line; do
                     [[ -n "$line" ]] && echo "[$(date +%H:%M:%S) $rel] $line"
                 done
