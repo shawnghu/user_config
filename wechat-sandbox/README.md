@@ -9,7 +9,7 @@ sandbox with a default-deny home directory and an isolated nested X server.
 ~/user_config/wechat-sandbox/install.sh
 ```
 
-This installs `firejail` + `Xephyr`, downloads/extracts the AppImage to
+This installs `firejail` + `xpra`, downloads/extracts the AppImage to
 `~/wechat-sandbox/squashfs-root`, and symlinks the profile and launcher into
 place. Re-running it is safe; delete `~/wechat-sandbox/WeChatLinux_x86_64.AppImage`
 first to force a fresh download (i.e. to upgrade WeChat).
@@ -21,7 +21,8 @@ wechat-sandbox        # if ~/.local/bin is on PATH
 ```
 
 or launch "WeChat (sandboxed)" from your application menu. WeChat appears
-inside a nested Xephyr window.
+inside a nested xpra display; the clipboard is forwarded so copy/paste with
+the host works.
 
 ## Source of the AppImage
 
@@ -52,8 +53,9 @@ wechat config stubs). Secrets such as `~/.ssh`, the GNOME keyring,
 If WeChat starts using a new data directory, add a `whitelist` line to
 `wechat.profile`.
 
-**X11 isolation:** runs under nested Xephyr so WeChat cannot keylog or
-screenshot other windows on your desktop.
+**X11 isolation:** runs under a nested xpra display so WeChat cannot keylog
+or screenshot other windows on your desktop. xpra forwards the clipboard, so
+copy/paste between WeChat and the host still works.
 
 **Known gap — networking:** WeChat keeps full host networking, including
 localhost and the LAN. Per-app network filtering needs root because

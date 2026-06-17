@@ -5,9 +5,9 @@
 
 WECHAT_DIR="${HOME}/wechat-sandbox/squashfs-root"
 
-# WeChat runs in an isolated nested X server (Xephyr) so it cannot snoop on
-# other windows. Set the nested screen size here.
-XEPHYR_SCREEN="1280x1024"
+# WeChat runs in an isolated nested X server (xpra, configured in
+# wechat.profile) so it cannot snoop on other windows, while xpra forwards
+# the clipboard so copy/paste with the host still works.
 
 if [ ! -x "${WECHAT_DIR}/AppRun" ]; then
     echo "WeChat is not installed at ${WECHAT_DIR}." >&2
@@ -32,5 +32,5 @@ fi
 # If WeChat loses connectivity after adding it, revert step 2.
 # ---------------------------------------------------------------------------
 
-echo "Starting WeChat in firejail sandbox (Xephyr ${XEPHYR_SCREEN})..."
-firejail --profile=wechat --xephyr-screen="${XEPHYR_SCREEN}" "${WECHAT_DIR}/AppRun"
+echo "Starting WeChat in firejail sandbox (xpra)..."
+firejail --profile=wechat "${WECHAT_DIR}/AppRun"

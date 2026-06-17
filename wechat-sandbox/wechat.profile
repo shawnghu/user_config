@@ -37,13 +37,13 @@ mkdir ${HOME}/Downloads
 whitelist ${HOME}/Downloads
 
 # ---------------------------------------------------------------------------
-# X11 isolation: run WeChat against a nested Xephyr server instead of the
-# host X server. Without this, WeChat (an X11 client) can keylog and
-# screenshot every other window on the desktop. Xephyr gives it an isolated
-# display. (xpra would be more seamless but is not installed by default.)
-# Screen size is set via --xephyr-screen in run-wechat.sh.
+# X11 isolation: run WeChat against a nested xpra server instead of the host
+# X server. Without this, WeChat (an X11 client) can keylog and screenshot
+# every other window on the desktop. xpra gives it an isolated display while
+# forwarding the clipboard, so copy/paste between WeChat and the host works.
+# (Xephyr is more lightweight but does NOT bridge the clipboard.)
 # ---------------------------------------------------------------------------
-x11 xephyr
+x11 xpra
 
 # ---------------------------------------------------------------------------
 # Network: fine-grained filtering (allow internet, deny localhost/LAN) is NOT

@@ -22,9 +22,9 @@ APPIMAGE_PATH="${WECHAT_DIR}/${APPIMAGE_NAME}"
 FIREJAIL_PROFILE_DIR="${HOME}/.config/firejail"
 BIN_DIR="${HOME}/.local/bin"
 
-echo "==> Installing dependencies (firejail, Xephyr)"
+echo "==> Installing dependencies (firejail, xpra)"
 command -v firejail >/dev/null && echo "    firejail present" || sudo apt install -y firejail
-command -v Xephyr   >/dev/null && echo "    Xephyr present"   || sudo apt install -y xserver-xephyr
+command -v xpra     >/dev/null && echo "    xpra present"     || sudo apt install -y xpra
 
 mkdir -p "$WECHAT_DIR" "$FIREJAIL_PROFILE_DIR" "$BIN_DIR"
 
