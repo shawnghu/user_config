@@ -14,6 +14,12 @@ This installs `firejail` + `xpra`, downloads/extracts the AppImage to
 place. Re-running it is safe; delete `~/wechat-sandbox/WeChatLinux_x86_64.AppImage`
 first to force a fresh download (i.e. to upgrade WeChat).
 
+**xpra version matters.** Ubuntu 24.04 ships xpra 3.1.5, which is too old for
+noble's pygobject/Pillow and renders WeChat with constant UI stalls (the
+`cairo.Context` / `PIL.ANTIALIAS` errors). The installer therefore pulls a
+current xpra (6.x) from the official xpra.org apt repo via
+`setup-xpra-repo.sh`. You can run that script standalone to upgrade xpra.
+
 ## Run
 
 ```sh
@@ -33,9 +39,10 @@ Direct: `https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.AppIm
 
 | File              | Role                                                        |
 |-------------------|-------------------------------------------------------------|
-| `install.sh`      | Installer (deps, download, extract, symlink, desktop entry) |
-| `wechat.profile`  | firejail profile → `~/.config/firejail/wechat.profile`      |
-| `run-wechat.sh`   | Launcher → `~/.local/bin/wechat-sandbox`                    |
+| `install.sh`         | Installer (deps, download, extract, symlink, desktop entry) |
+| `setup-xpra-repo.sh` | Adds xpra.org apt repo + installs current xpra (root)       |
+| `wechat.profile`     | firejail profile → `~/.config/firejail/wechat.profile`      |
+| `run-wechat.sh`      | Launcher → `~/.local/bin/wechat-sandbox`                    |
 
 Runtime locations (not in the repo):
 - App: `~/wechat-sandbox/squashfs-root`

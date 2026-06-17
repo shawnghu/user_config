@@ -24,7 +24,16 @@ BIN_DIR="${HOME}/.local/bin"
 
 echo "==> Installing dependencies (firejail, xpra)"
 command -v firejail >/dev/null && echo "    firejail present" || sudo apt install -y firejail
-command -v xpra     >/dev/null && echo "    xpra present"     || sudo apt install -y xpra
+
+# Ubuntu's packaged xpra (3.1.x) is too old for noble's pygobject/Pillow and
+# renders WeChat with constant UI stalls. Require xpra >= 5 from xpra.org.
+xpra_major() { xpra --version 2>/dev/null | grep -oE '[0-9]+' | head -1; }
+if ! command -v xpra >/dev/null || [ "$(xpra_major)" -lt 5 ] 2>/dev/null; then
+    echo "    Installing current xpra from xpra.org (packaged version too old)"
+    "${REPO_DIR}/setup-xpra-repo.sh"
+else
+    echo "    xpra present ($(xpra --version 2>/dev/null | head -1))"
+fi
 
 mkdir -p "$WECHAT_DIR" "$FIREJAIL_PROFILE_DIR" "$BIN_DIR"
 
