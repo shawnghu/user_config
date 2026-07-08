@@ -11,13 +11,13 @@ export UV_PYTHON_INSTALL_DIR="$HOME/.uv/python_install"
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 cd
 [ -d small-rl ] || git clone git@github.com:shawnghu/small-rl.git
-[ -d rl-rewardhacking-private ] || git clone git@github.com:ariahw/rl-rewardhacking-private.git
-cd rl-rewardhacking-private/
-source commands.sh
+# [ -d rl-rewardhacking-private ] || git clone git@github.com:ariahw/rl-rewardhacking-private.git
+# cd rl-rewardhacking-private/
+#source commands.sh
 # `|| true`: create_leetcode_dataset raises "Dataset already exists" on re-runs,
 # and we don't want that to abort the rest of the setup.
-create_leetcode_dataset "simple_overwrite_tests" || true
-create_leetcode_dataset "simple_overwrite_tests_aware" || true
+# create_leetcode_dataset "simple_overwrite_tests" || true
+# create_leetcode_dataset "simple_overwrite_tests_aware" || true
 cd
 cd small-rl
 # git checkout worktree-scale-up
@@ -35,9 +35,9 @@ cd small-rl
 uv sync
 source .venv/bin/activate
 uv run ./vllm_patches/apply.sh
-uv run ./setup_leetcode_eval_data.sh
-uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.1
-uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.2
-uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.3
-uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.4
-uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.5
+#uv run ./setup_leetcode_eval_data.sh
+#uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.1
+#uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.2
+#uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.3
+#uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.4
+#uv run python tools/generate_conditional_leetcode_data.py --unhinted_frac 0.5
